@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-git add $AMPGENKIT/scripts $AMPGENKIT/Manual/main.tex $AMPGENKIT/python $AMPGENKIT/setup.sh $AMPGENKIT/options $AMPGENKIT/lessons
+git add $AMPGENKIT/scripts $AMPGENKIT/Manual/main.tex $AMPGENKIT/python $AMPGENKIT/setup.sh $AMPGENKIT/options $AMPGENKIT/lessons $AMPGENKIT/.gitignore
 
