@@ -1,0 +1,8 @@
+*.swp
+*.root
+*.a
+*.log
+*.dst
+*.aux
+*.toc
+*.out
