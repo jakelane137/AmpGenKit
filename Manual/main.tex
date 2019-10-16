@@ -1,0 +1,185 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{siunitx}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+ 
+\urlstyle{same}
+\title{AmpGen Manual}
+\author{Jake Lane}
+\date{October 2019}
+
+\newcommand{\AmpGen}{\texttt{AmpGen} }
+\newcommand{\Generator}{\texttt{Generator} }
+\newcommand{\QcGenerator}{\texttt{QcGenerator} }
+\newcommand{\QcFitter}{\texttt{QcFitter} }
+\newcommand{\SignalOnlyFitter}{\texttt{SignalOnlyFitter} }
+\newcommand{\nEvents}{\texttt{nEvents} }
+\newcommand{\EventType}{\texttt{EventType} }
+\newcommand{\TagType}{\texttt{TagType} }
+\newcommand{\DataSample}{\texttt{DataSample} }
+\newcommand{\IntegrationSample}{\texttt{IntegrationSample} }
+\newcommand{\Output}{\texttt{Output} }
+\newcommand{\CoordinateType}{\texttt{CouplingConstant::Coordinates} }
+\newcommand{\SpinFormalism}{\texttt{Particle::SpinFormalism} }
+
+\newcommand{\lxplus}{\texttt{lxplus} }
+\newcommand{\python}{\texttt{python} }
+\newcommand{\cpp}{\texttt{C++} }
+\newcommand{\home}{\texttt{\$HOME} }
+\newcommand{\PATH}{\texttt{\$PATH} }
+\newcommand{\AmpGenRoot}{\texttt{\$AMPGENROOT} }
+\newcommand{\pypath}{\texttt{\$PYTHONPATH} }
+\newcommand{\bash}{\texttt{bash} }
+\newcommand{\ROOT}{\texttt{ROOT} }
+
+
+
+\newcommand{\Dz}{\ensuremath{D^0}}
+\newcommand{\Dbarz}{\ensuremath{\bar{D}^0}}
+\newcommand{\Ks}{\ensuremath{K_S^0}}
+\newcommand{\Kl}{\ensuremath{K_L^0}}
+\newcommand{\piz}{\ensuremath{\pi^0}}
+\newcommand{\Bz}{\ensuremath{B^0}}
+\newcommand{\Bbarz}{\ensuremath{\bar{B}^0}}
+
+\newcommand{\kspipi}{\ensuremath{\Ks \pi^+ \pi^-}}
+\newcommand{\kspiz}{\ensuremath{\Ks \piz}}
+\newcommand{\kpi}{\ensuremath{K^+ \pi^-}}
+\newcommand{\pik}{\ensuremath{K^- \pi^+}}
+\newcommand{\kk}{\ensuremath{K^+ K^-}}
+
+\newcommand{\fb}{\si{\femto\barn}}
+\newcommand{\ifb}{\si{\per\femto\barn}}
+\newcommand{\GB}{\si{\giga\byte}}
+\newcommand{\Tev}{\si{\TeV}}
+\newcommand{\Gev}{\si{\GeV}}
+\newcommand{\Mev}{\si{\MeV}}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+\section{Getting Started}
+\subsection{Installation on lxplus}
+To install AmpGen, we copy from the github repository \url{https://github.com/GooFit/ampGen}. You may install AmpGen anywhere you have access on lxplus - I advise using the ``workfs'' directory since you get 100GB of space. AmpGen itself will take $\approx 1\texttt{GB}$ of space when installed. Throughout this manual I will use start in the directory \texttt{\$HOME/work/sw/} an
+\begin{lstlisting}[language=bash]
+cd \$HOME/work/sw/
+git clone --recursive https://github.com/GooFit/AmpGen
+cd AmpGen
+source /cvmfs/sft.cern.ch/lcg/views/setupViews.sh 
+\ LCG_94python3 x86_64-centos7-gcc8-opt
+mkdir install
+cd install
+cmake .. -DCMAKE__CXX__STANDARD=17
+make -j10
+\end{lstlisting}
+This will install AmpGen to \texttt{\$HOME/work/sw/AmpGen} since we will need to access this directory a lot we can set the environment variable, \texttt{\$AMPGENROOT}, to point to this directory
+\begin{lstlisting}[language=bash]
+export AMPGENROOT=$HOME/work/sw/AmpGen
+\end{lstlisting}
+this will give you a directory containing \texttt{bin/} which will have all of the programs that AmpGen uses for Generation, Fitting and converting models into source code, you can run these programs, e.g. ``Generator'' by executing the file where they are located \texttt{\$AMPGENROOT/install/bin/Generator}. For convienence we can append the location of the programs to the \texttt{\$PATH} variable
+\begin{lstlisting}[language=bash]
+export PATH=$PATH:$AMPGENROOT/install/bin
+\end{lstlisting},
+now you can just type the name of the program directly to call it, i.e. \texttt{Generator}.
+If you wish to change branch, e.g \texttt{jlane}, then just use
+\begin{lstlisting}[language=bash]
+cd $AMPGENROOT
+git checkout jlane
+cd $AMPGENROOT/install
+rm -rf * 
+cmake .. -DCMAKE__CXX__STANDARD=17
+make -j10
+\end{lstlisting}
+In the \texttt{jlane} branch there is a \texttt{setup.sh} file in \texttt{\$HOME/work/sw/AmpGen} which will automatically set the \texttt{\$AMPGENROOT} and \texttt{\$PATH} variables for you. 
+\subsection{Running Programs}
+All AmpGen programs work by requiring an ``options'' file which can tell AmpGen 
+\begin{enumerate}
+    \item The kind of decay to generate or fit, \texttt{EventType}, e.g. \texttt{D0 K0S0 pi- pi+} for $D^0 \to K_S^0 \pi^- \pi^+$
+    \item The complex coupling parameters of particular amplitudes for your decay, e.g. $D^0 \to K_S^0 \pi^+ \pi^-$
+\end{enumerate}
+Alternatively one can simply tell AmpGen using variables e.g. 
+\begin{lstlisting}
+Generator --EventType "D0 K0S0 pi- pi+" --nEvents 1000 --Output data.root 
+\ $AMPGENROOT/options/example_kspipi.opt
+\end{lstlisting}
+which will generate $1000$ $D^0 \to K_S^0 \pi^+ \pi^-$ events in \texttt{data.root} 
+
+
+To run any program, e.g. \texttt{QcGenerator}, with some options file, \texttt{myopt.opt}
+\texttt{QcGenerator myopt.opt}
+by default QcGenerator will output your generated sample as \texttt{ToyMC.root} which will contain the distribution of four-momentum of all of the final state particles. 
+Below is an example - located at \texttt{\$AMPGENROOT/options/example\_kspipi.opt} which shows what an ``options'' file looks like. 
+\begin{lstlisting}
+# Example usage of the K-matrix with P-vector parameters
+# from https://arxiv.org/pdf/0804.2089.pdf 
+EventType D0 K0S0 pi+ pi- 
+
+CouplingConstant::Coordinates  polar
+CouplingConstant::AngularUnits deg 
+# Import K-matrix parameters 
+Import $AMPGENROOT/options/kMatrix.opt
+D0{K0S0,rho(770)0{pi+,pi-}}      2  1.000  0.00  2     0.0 0.0 
+D0{K*(892)bar-{K0S0,pi-},pi+}    0  1.740  0.01  0   139.0 0.3
+D0{K(0)*(1430)bar-,pi+}          0  8.200  0.70  0   153.0 8.0
+# Coupling from D0 to K0S0,pipi S-wave, can be arbitrarily fixed.
+D0{K0S0,PiPi00}                  2  0.020  0.00  2     0.0 0.0 
+# # P-vector couplings of the pipi S-wave to the K-matrix. 
+PiPi00[kMatrix.pole.0]{pi+,pi-}  0  9.30   0.40  0   -78.7 1.6
+PiPi00[kMatrix.pole.1]{pi+,pi-}  0 10.89   0.26  0  -159.1 2.6
+PiPi00[kMatrix.pole.2]{pi+,pi-}  0 24.20   2.00  0   168.0 4.0
+PiPi00[kMatrix.pole.3]{pi+,pi-}  0  9.16   0.24  0    90.5 2.6
+PiPi00[kMatrix.prod.0]{pi+,pi-}  0  7.94   0.40  0    73.9 1.1
+PiPi00[kMatrix.prod.1]{pi+,pi-}  0  2.00   0.30  0   -18.0 9.0
+PiPi00[kMatrix.prod.2]{pi+,pi-}  0  5.10   0.30  0    33.0 3.0
+PiPi00[kMatrix.prod.3]{pi+,pi-}  0  3.23   0.18  0     4.8 2.5
+PiPi00_s0_prod 3 -0.07 0.03
+
+K(0)*(1430)bar-[LASS.BW]{K0S0,pi-} 2  0.01   0.00  2     0.0 0.0
+K(0)*(1430)bar-[LASS.NR]{K0S0,pi-} 0  0.01   0.00  0    20.0 0.0
+K(0)*(1430)bar-_mass               2  1.463  0.002
+K(0)*(1430)bar-_width              2  0.233  0.005
+
+# enforce CP symmetry in mass and width of K(0)
+K(0)*(1430)+_mass                     = K(0)*(1430)bar-_mass   
+K(0)*(1430)+_width                    = K(0)*(1430)bar-_width
+\end{lstlisting}
+
+\subsection{QcGenerator}
+The QcGenerator generates ``correlated'' events, e.g. decays from $\psi(3770) \to D^0 \bar{D}^0$. 
+As QCGenerator requires information about two sets of decays we need to tell it which is our ``tag'' decay, which is given in the format
+\begin{lstlisting}
+TagTypes { "KK       D0{K+,K-}"
+           "KPi      D0{K-,pi+}"
+           "KsPi0    D0{K0S0,pi0}"
+           "PiK      D0{K+,pi-}"
+           "PiKPiPi  D0{K+,pi-,pi-,pi+}"
+           "KPiPiPi  D0{K-,pi+,pi+,pi-}"
+         }
+\end{lstlisting}
+\subsubsection{Input}
+QcGenerator can take either
+\begin{enumerate}
+    \item A fixed number of events per tag - specified by the \texttt{nEvents} variable
+    \item A list of branching fractions for each tag - specfiied by the \texttt{BranchingRatios} variable, a list of efficiencies - specified by the \texttt{Efficiencies} variable and the integrated luminosity - specified by the \texttt{Luminosity} variable which defaults to the CLEO value of 10 \fb which will generate a more realistic distribution of tag events. 
+\end{enumerate}
+
+The \texttt{EventType} variable will tell \texttt{QcGenerator} what the ``signal'' decay is. 
+\subsubsection{Output}
+\QcGenerator\  will generate a \ROOT  file given by the \Output  option, each tag is a separate ``Tree'' in the file, with naming done via the \TagType  variable. 
+In each \texttt{TTree} one has the components of the four-momenta, $(E, p_x, p_y, p_z)$ of each particle in the final state of the \EventType. The ``tag'' particles are prefixed with \texttt{Tag\_}. From this point one can use the \ROOT  or \python  tools of one's choosing. 
+In the repository that comes with this manual - we have included some \python tools that use \texttt{upROOT} and \texttt{pyplot} to plot the distributions from \QcGenerator.
+\subsection{\QcFitter}
+\QcFitter  takes correlated data, such as toy data generated with \QcGenerator, or real data from BESIII and fits a given amplitude model to it.
+\subsubsection{Input}
+One needs to specify the \DataSample  and \IntegrationSample  to \QcFitter  - the \DataSample  is, of course, the data sample that one wishes to fit and the \IntegrationSample  is used to generate projections and measure the $\chi^2$ of the fit. At the time of writing, one must supply two \ROOT files to \QcFitter since the automatic phase-space generation has not yet been implemented into \AmpGen for correlated data. 
+\QcFitter also needs the \TagType variable to be set so it knows which tag to look for. 
+\end{document}
