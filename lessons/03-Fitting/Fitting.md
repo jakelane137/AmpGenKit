@@ -14,7 +14,7 @@ If one does not provide an integration sample to `SignalOnlyFitter`, `AmpGen` wi
 
 the command 
 
-`Generator --nEvents 1000000 --EventType "D0 K0S0 pi- pi+ --Output flat.root --Seed $RANDOM flat.opt"`
+`Generator --nEvents 1000000 --EventType "D0 K0S0 pi- pi+" --Output flat.root --Seed $RANDOM flat.opt`
 will generate our "flat" integration sample with 1000000 events
 
 We will generate our data sample with `Generator` 

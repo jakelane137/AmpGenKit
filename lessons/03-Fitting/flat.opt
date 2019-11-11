@@ -1,0 +1,18 @@
+# Example usage of the K-matrix with P-vector parameters from https://arxiv.org/pdf/0804.2089.pdf
+# Note that as amplitude conventions are likely to be very different, so shouldn't reproduce the results.
+# The P-vector conventions on the other hand should be the same.
+
+Import $AMPGENROOT/options/kMatrix.opt
+Particle::DefaultModifier BW
+Particle::SpinFormalism   Covariant
+ParticlePropertiesList::Alias PiPi00 PiPi
+ParticlePropertiesList::Alias PiPi00 PiPiBar
+nCores 1
+
+
+
+
+
+
+D0{K0S0,pi-,pi+} 2 1 0 2 0 0
+
