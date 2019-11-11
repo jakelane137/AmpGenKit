@@ -19,4 +19,6 @@ Generator --Output Output.root --EventType "D0 K0S0 pi- pi+" --nEvents 10000 --S
 ```
 note that we have also used the `bash` variable `$RANDOM` to ensure the seed is different each time we run this command, otherwise every time we will generate identical sets of events.
 
-The output from `Generator`  
+The output from the above command should look like
+
+![](Generator_Output.png)
