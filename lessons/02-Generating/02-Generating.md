@@ -21,4 +21,17 @@ note that we have also used the `bash` variable `$RANDOM` to ensure the seed is 
 
 The output from the above command should look like
 
-![](Generator_Output.png)
+![](lessons/02-Generating/Generator_Output.png)
+
+We can examine the `ROOT` file with `TBrowser`, which should show the structure of the output file
+![](lessons/02-Generating/TBrowser.png)
+
+`Generator` will automatically produce histograms for the Dalitz variables (in 1D and 2D)
+
+![](lessons/02-Generating/s01.png)
+![](lessons/02-Generating/s02.png)
+![](lessons/02-Generating/s12.png)
+
+![](lessons/02-Generating/s01xs02.png)
+![](lessons/02-Generating/s01xs12.png)
+![](lessons/02-Generating/s02xs12.png)
