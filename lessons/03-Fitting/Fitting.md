@@ -26,3 +26,7 @@ then to fit our data with our model
 ``SignalOnlyFitter --Seed $RANDOM --EventType "D0 K0S0 pi- pi+"" Plots plots.root --LogFile fit.log --DataSample data.root --IntegrationSample flat.root model.opt``
 
 this will fit ``data.root`` with our ``model.opt`` values and output the fit log to ``fit.log`` and the projections to ``plots.root``
+
+In the file, ``plots.root``, we see two sets of distributions of the Dalitz variables in our decay.
+
+![](lessons/03-Fitting/TBrowser.png)
