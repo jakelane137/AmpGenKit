@@ -3,36 +3,36 @@ Amplitudes
 
 `AmpGen`, as the name suggests, builds everything from "Amplitudes", $`A(\mathcal{P})`$ for multi-body decays that occupy some phasespace, $`\mathcal{P}`$. 
 
-Let's begin with a well known 3 body decay, `$D^0 \to K_S^0 \pi^+ \pi^-$`, which has many possible models to describe it. 
+Let's begin with a well known 3 body decay, $`D^0 \to K_S^0 \pi^+ \pi^-`$, which has many possible models to describe it. 
 
 Partial Wave
 ------------
 
 An amplitude in Ampgen can be described in many different ways, in these lessons we focus on the "Coherent Sum" approach, that is our Amplitude for a decay will be of the form
 ```math
-A(z) = \sum_i g_i A_i(z)
+A(z) = \sum_i a_i A_i(z)
 ```
-where `$z$` is the position in the phase-space `$\mathcal{P}$` of the decay and `$g_i$` is the complex coupling to the individual amplitude `$A_i$` which we call a "partial-wave".
+where $`z`$ is the position in the phase-space $`\mathcal{P}`$ of the decay and $`a_i`$ is the complex coupling to the individual amplitude $`A_i`$ which we call a "partial-wave".
 
 These partial waves can be factorised into four components
 
 ```math
 A_i = F_X F_r Z_L T_r
 ```
-where `$F_(X,r)$` is the mother, resonance respectively. The "barrier factors", `$F$` describe the production and decay of a resonance - these are known as "modifiers" to AmpGen, they are specified by the options
+where $`F_(X,r)`$ is the mother, resonance respectively. The "barrier factors", $`F`$ describe the production and decay of a resonance - these are known as "modifiers" to AmpGen, they are specified by the options
 ```
 Lineshapes::DefaultModifier BW
 ```
 which is usually a Blatt-Weiskopf factor (BW). 
 
-The "lineshape", `$T$`, is (by default) a relativistic Breit Wigner shape for a two body resonance. 
+The "lineshape", $`T`$, is (by default) a relativistic Breit Wigner shape for a two body resonance. 
 
-The "spin density" factor `$Z$`, describes the angular dependence of the partial wave - therefore one must specify a "formalism" as to how angles are to be interperated. 
+The "spin density" factor $`Z`$, describes the angular dependence of the partial wave - therefore one must specify a "formalism" as to how angles are to be interperated. 
 
 Options file
 ------------
 `AmpGen` will take an "options" file as an input for all of its programs. The main purpose of this options file is to describe every amplitude that we want to construct.
-In our `$D^0 \to K_S^0 \pi^+ \pi^-$` example we will start with a "flat" amplitude, we will call the options file "flat.opt"
+In our $`D^0 \to K_S^0 \pi^+ \pi^-`$ example we will start with a "flat" amplitude, we will call the options file "flat.opt"
 
 ```
 EventType D0 K0S0 pi+ pi-
@@ -64,7 +64,7 @@ CouplingConstant::CoordinateSystem cartesian
 D0{K0S0,pi+,pi-} Free 1 0.01 Free -0.5 0.01
 ```
 
-sets the coupling constant to the flat `$D^0 \to K_S^0 \pi^+ \pi^-$` decay to $`(1\pm 0.01) + (-0.5 \pm 0.01)$`
+sets the coupling constant to the flat $`D^0 \to K_S^0 \pi^+ \pi^-`$ decay to $`(1\pm 0.01) + (-0.5 \pm 0.01)$`
 
 whereas 
 
@@ -74,7 +74,7 @@ CouplingConstant::AngularUnits rad
 D0{K0S),pi,pi-} Free 2 0.01 Free 0.5 0.01
 ```
 
-set the coupling constant to the flat `$D^0 \to K_S^0 \pi^+ \pi^-$` decay to $`(2 \pm 0.01) e^{i (0.5 \pm 0.01)}$`.
+set the coupling constant to the flat $`D^0 \to K_S^0 \pi^+ \pi^-`$ decay to $`(2 \pm 0.01) e^{i (0.5 \pm 0.01)}$`.
 
 To use degrees, simply change the option
 
@@ -92,13 +92,13 @@ Lineshapes
 
 Each partial wave in an amplitude may be described by a different "lineshape", e.g Breit-Wigner, Gournaris-Sakurai, LASS, K-Matrix, FOCUS, etc. 
 AmpGen will use the "Breit-Wigner" lineshape by default, but to specify a specific lineshape for a componenet, use the `[]` after the name.
-For example, in `$D^0 \to K_S^0 \pi^+ \pi^-$`, we will want to use the "LASS" lineshape for the `$K_S^0 \pi^\pm$` S-wave. 
+For example, in $`D^0 \to K_S^0 \pi^+ \pi^-`$, we will want to use the "LASS" lineshape for the $`K_S^0 \pi^\pm`$ S-wave. 
 To do this in AmpGen we write in the options file
 ```
 CouplingConstant::Coordinates polar
 D0{K(0)*(1430)bar-[GLASS]{K0S0,pi-},pi+} Free 0.196005885344012 0.001056344750514 Free -1.43981739504892 0.006201212128016
 ```
-which sets a "LASS" lineshape with the coupling `$(0.196 \pm 0.001) e^{i(-1.440 \pm 0.006)}$` for the `$K_S^0 \pi^-$` S-wave.
+which sets a "LASS" lineshape with the coupling $`(0.196 \pm 0.001) e^{i(-1.440 \pm 0.006)}`$ for the $`K_S^0 \pi^-`$ S-wave.
 To modify the parameters of the lineshape itself 
 
 ```
@@ -109,7 +109,7 @@ K(0)*(1430)bar-::GLASS::phiF 2              0.00173        0.01
 K(0)*(1430)bar-::GLASS::R   3 1 0
 K(0)*(1430)bar-::GLASS::phiR 2               -1.9145        0.01
 ```
-which sets the parameters `$a,r,F,\phi_F,R,\phi_R$` from the LASS parameterisation. 
+which sets the parameters $`a,r,F,\phi_F,R,\phi_R`$ from the LASS parameterisation. 
 
 
 
@@ -137,7 +137,7 @@ X_mass
 X_width
 X_radius
 ```
-where `$X$` is the name of the particle
+where $`X`$ is the name of the particle
 
 e.g. 
 
